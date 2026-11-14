@@ -1,9 +1,35 @@
 # IfSoul CustomNPCs-Unofficial bridge
 
 Bridge for Minecraft Java 1.21.1, NeoForge 21.1.235,
-JDK 21 and [CustomNPCs-Unofficial 1.21.1.20251230](https://www.curseforge.com/minecraft/mc-mods/customnpcs-unofficial/files/7411561). The bridge builds and its device protocol and isolated server startup were checked. In-game dialogue through a native Minecraft client remains untested. The operator selects one
-player and one NPC. A right-click followed by `/ifsoul-customnpcs <text>`
-sends a private line. The host mod retains all NPC mechanics.
+JDK 21 and [CustomNPCs-Unofficial 1.21.1.20251230](https://www.curseforge.com/minecraft/mc-mods/customnpcs-unofficial/files/7411561).
+The operator selects one player and one NPC. Right-click that NPC and use
+`/ifsoul-customnpcs <text>` to send a private line.
+
+A compatible NeoForge client and the unchanged server bridge JAR were used
+to verify pairing, native approach, cancellation before movement, stop during
+movement, grant revocation, and pairing again after restart without replay.
+The client also received a private reply that was recorded in App. The test
+used an isolated offline player and a deterministic provider.
+
+## Optional game actions
+
+Enable `game-actions=true` in the bridge configuration and issue an App pairing
+grant with `movement` permission for this player and NPC. Existing dialogue-only
+grants continue to provide private dialogue. The model picks from choices the
+bridge supplies for the selected NPC.
+
+Come to the selected player’s location using the mod’s native navigation.
+
+The NPC must have no path already in progress. Use `/ifsoul-customnpcs stop`
+or `/ifsoul-customnpcs wait` to cancel a pending action or stop movement started by the bridge. Movement also
+ends on timeout, loss of the player or NPC, or loss of authorization.
+
+The game host reports the result of the action to App.
+
+During movement, the bridge normally re-checks the App grant once per
+second. The service round trip adds to that interval. A short movement can
+finish before the next check, and App rejects outcomes sent with a revoked
+grant.
 
 ## Build
 
@@ -23,7 +49,7 @@ With the required upstream mods separately installed, write
 
 ```properties
 service-origin=http://127.0.0.1:8788
-player-uuid=<selected authenticated player UUID>
+player-uuid=<selected player UUID reported by this server>
 npc-id=<selected NPC entity UUID>
 pairing-code=<fresh one-use IfSoul device code>
 ```
@@ -39,7 +65,7 @@ Renew the code after restart or grant expiration.
 | Bind | One service grant for the exact server-authoritative player and CustomNPCs-Unofficial NPC. |
 | Interact | Right-click the selected NPC, then use `/ifsoul-customnpcs <text>` in the same world within eight blocks. The bridge checks the target again before replying. |
 | Reply | Bounded private text to the approved player. Disconnect, world change and server shutdown invalidate pending delivery. |
-| Game control | NPC life, movement, pathfinding, combat and game permissions stay with the host. Group dialogue, autonomous actions and public chat are outside this bridge's scope. |
+| Game control | The optional movement grant permits one bounded approach to the selected player. The host owns navigation and game permissions. |
 
 In IfSoul **Games → Configure Minecraft**, choose the matching server software
 and bridge. Select the character, memory and provider and enter the player and

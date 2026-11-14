@@ -4,7 +4,7 @@ license = "See README.md"
 
 [[mods]]
 modId = "ifsoul_customnpcs"
-version = "0.6.0"
+version = "0.7.0"
 displayName = "IfSoul CustomNPCs-Unofficial Bridge"
 
 [[dependencies.ifsoul_customnpcs]]
