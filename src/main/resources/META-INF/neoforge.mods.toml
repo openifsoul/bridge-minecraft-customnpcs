@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[4,5)"
+license = "See README.md"
+
+[[mods]]
+modId = "ifsoul_customnpcs"
+version = "0.6.0"
+displayName = "IfSoul CustomNPCs-Unofficial Bridge"
+
+[[dependencies.ifsoul_customnpcs]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+side = "SERVER"
+
+[[dependencies.ifsoul_customnpcs]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.235]"
+side = "SERVER"
+
+[[dependencies.ifsoul_customnpcs]]
+modId = "customnpcs"
+type = "required"
+versionRange = "[1.21.1.20251230]"
+ordering = "AFTER"
+side = "SERVER"
